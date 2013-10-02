@@ -1,10 +1,9 @@
-<?php $title = "Create Thread" ?>
-
-<h1>Create a Thread</h1>
+<?php $title = " - New Thread" ?>
+<p><a href="<?php eh(url('thread/index')) ?>">All Threads</a> &raquo; Start New Thread</p>
 
 <?php if ($thread->hasError() || $comment->hasError()): ?>
     <div class="alert alert-block">
-        <h4 class="alert-heading">Validation error!</h4>
+        <h4 class="alert-heading">Validation Error:</h4>
         <?php if (!empty($thread->validation_errors['title']['length'])): ?>
             <div><em>Title</em> must be between
                 <?php eh($thread->validation['title']['length'][1]) ?> and
@@ -30,7 +29,11 @@
     <label>Title</label>
     <input type="text" class="span2" name="title" value="<?php eh(Param::get('title')) ?>">
     <label>Name</label>
-    <input type="text" class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
+    <?php if(isset($_SESSION['username'])): ?>
+        <input type="text" class="span2" name="username" value="<?php eh($_SESSION['username']) ?>" readonly>
+    <?php else: ?>
+        <input type="text" class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
+    <?php endif ?>
     <label>Comment</label>
     <textarea name="body"><?php eh(Param::get('body')) ?></textarea>
     <br/>

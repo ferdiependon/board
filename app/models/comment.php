@@ -4,7 +4,7 @@ class Comment extends AppModel
     public $validation = array(
         'username' => array(
             'length' => array(
-                'validate_between', 1, 16,
+                'validate_between', 1, 32,
             ),
         ),
         'body' => array(

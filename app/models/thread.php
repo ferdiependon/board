@@ -4,7 +4,7 @@ class Thread extends AppModel
     public $validation = array(
         'title' => array(
             'length' => array(
-                'validate_between', 1, 30,
+                'validate_between', 1, 32,
             ),
         ),
     );
@@ -20,7 +20,7 @@ class Thread extends AppModel
         $db = DB::conn();
         $db->begin();
         
-        $db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
+        $db->query('INSERT INTO thread SET title = ?, author = ?, created = NOW()', array($this->title, $comment->username));
         $this->id = $db->lastInsertId();
         
         $this->write($comment);

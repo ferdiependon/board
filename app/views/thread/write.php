@@ -1,8 +1,8 @@
-<h2><?php eh($thread->title) ?></h2>
+<h1><?php eh($thread->title) ?></h1>
 
 <?php if ($comment->hasError()): ?>
     <div class="alert alert-block">
-        <h4 class="alert-heading">Validation errors!</h4>
+        <h4 class="alert-heading">Validation Errors:</h4>
         <?php if (!empty($comment->validation_errors['username']['length'])): ?>
             <div><em>Name</em> must be between
                 <?php eh($comment->validation['username']['length'][1]) ?> and
@@ -20,7 +20,11 @@
 
 <form class="well" method="post" action="<?php eh(url('thread/write')) ?>">
     <label>Name</label>
-    <input type="text class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
+    <?php if(isset($_SESSION['username'])): ?>
+        <input type="text" class="span2" name="username" value="<?php eh($_SESSION['username']) ?>" readonly>
+    <?php else: ?>
+        <input type="text class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
+    <?php endif ?>
     <label>Comment</label>
     <textarea name="body"><?php eh(Param::get('body')) ?></textarea>
     <br/>
