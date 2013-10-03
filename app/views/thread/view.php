@@ -1,18 +1,48 @@
 <?php $title = " - " . $thread->title ?>
+
+<script type="text/javascript">
+    function filter()
+    {
+        document.forms["pager"].submit();
+    }
+</script>
+
 <p><a href="<?php eh(url('thread/index')) ?>">All Threads</a> &raquo; <?php eh($thread->title) ?></p>
 <h1><?php eh($thread->title) ?></h1>
 
 <?php foreach ($comments as $k => $v): ?>
     <div class="comment">
         <div class="meta">
-            #<?php eh($k + 1) ?>: Posted by <b><?php eh($v->username) ?></b> on 
-             <?php eh(date("F j, Y @ g:i:s A", strtotime($v->created))) ?>
+            #
+            <?php eh(($k+1) + ($page-1)*$items) ?>: Posted by <b><?php eh($v->username) ?></b> on 
+            <?php eh(
+                date("F j, Y", strtotime($v->created))
+                . " at " .
+                date("g:i:s A", strtotime($v->created)))
+            ?>
         </div>
         <div class="text">
             <?php echo readable_text($v->body) ?>
         </div>
     </div>
 <?php endforeach ?>
+
+<div class="pager">
+    <?php for ($i=1; $i <= $pages; $i++): ?>
+        <a href="<?php eh(url('', array('page'=>$i))) ?>"><?php eh($i) ?></a>
+    <?php endfor ?>
+    <form method="get" name="pager">
+        Items:
+        <input type="hidden" name="thread_id" value="<?php eh($_GET['thread_id']) ?>">
+        <select id="items" name="items" onchange="filter()">
+            <option <?php if ($items == 5) echo 'selected' ?>>5</option>
+            <option <?php if ($items == 10) echo 'selected' ?>>10</option>
+            <option <?php if ($items == 20) echo 'selected' ?>>20</option>
+            <option <?php if ($items == 30) echo 'selected' ?>>30</option>
+            <option <?php if ($items == 50) echo 'selected' ?>>50</option>
+        </select>
+    </form>
+</div>
 
 <hr>
 

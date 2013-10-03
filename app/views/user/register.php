@@ -5,7 +5,7 @@
 <?php if ($user->hasError()): ?>
     <div class="alert alert-block">
         <h4 class="alert-heading">Registration Error:</h4>
-        <?php if (!empty($user->validation_errors['username']['exists'])): ?>
+        <?php if (!empty($user->validation_errors['username2']['exists'])): ?>
             <div><em>Username</em> already exists!</div>
         <?php endif ?>
         <?php if (!empty($user->validation_errors['username']['length'])): ?>

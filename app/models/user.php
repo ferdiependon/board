@@ -1,11 +1,16 @@
 <?php
 class User extends AppModel
 {
-    public $password2;
+    public $username2, $password2;
     public $validation = array(
         'username' => array(
             'length' => array(
                 'validate_between', 1, 32,
+            ),
+        ),
+        'username2' => array(
+            'exists' => array(
+                'username_exists'
             ),
         ),
         'password' => array(
@@ -48,6 +53,7 @@ class User extends AppModel
     
     public function register()
     {
+        $this->username2 = $this->username;
         $this->validation['password2']['match'][] = $this->password;
         $this->validate();
         if ($this->hasError()) {

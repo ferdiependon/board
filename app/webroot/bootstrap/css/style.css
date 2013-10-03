@@ -8,20 +8,42 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+html {
+    overflow: scroll;
+}
+
 div.thread-list {
-    border: solid 1px #08c;
-    border-radius: 5px;
-    margin-top: 5px;
+    border: double 5px #08c;
+    border-radius: 10px;
+    margin-top: 20px;
     padding: 10px;
 }
 
 div.thread-list span {
     display: inline-block;
-    width: 32%;
+    width: 27%;
+}
+
+div.thread-list span.comments {
+    width: 10%;
+}
+
+div.pager {
+    margin: 0px;
+}
+
+div.pager form {
+    float: right;
+    margin: 0px;
+}
+
+div.pager select {
+    width: 60px;
 }
 
 div.thread-list div.header {
     background-color: #08c;
+    border-radius: 5px;
     color: white;
     padding: 5px;
 }
@@ -36,10 +58,10 @@ div.thread-list ul li {
     border-bottom: solid 1px #08c;
     padding: 5px;
 }
- 
+
 div.comment {
-    border: solid 1px #08c;
-    border-radius: 5px;
+    border: dashed 2px #08c;
+    border-radius: 10px;
     color: white;
     margin: 10px auto;
     padding: 10px;
@@ -47,6 +69,7 @@ div.comment {
 
 div.comment .meta {
     background-color: #08c;
+    border-radius: 5px;
     padding: 5px;
 }
 
@@ -64,7 +87,7 @@ form.well textarea {
     max-width: 880px;
 }
  
- div.login {
+div.login {
     display: block;
     float: right;
     height: 41px;

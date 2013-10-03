@@ -20,7 +20,7 @@ class Thread extends AppModel
         $db = DB::conn();
         $db->begin();
         
-        $db->query('INSERT INTO thread SET title = ?, author = ?, created = NOW()', array($this->title, $comment->username));
+        $db->query('INSERT INTO thread SET title = ?, author = ?, last_post = NOW()', array($this->title, $comment->username));
         $this->id = $db->lastInsertId();
         
         $this->write($comment);
@@ -35,31 +35,43 @@ class Thread extends AppModel
         return new self($row);
     }
 
-    public static function getAll()
+    public static function getAll($items, $page)
     {
         $threads = array();
+        $page = ($page-1)*$items;
         
         $db = DB::conn();
-        $rows = $db->rows('SELECT * FROM thread');
+        $count = $db->value("SELECT COUNT(*) FROM thread");
+        $pages = (int) ceil($count/$items);
+        
+        $rows = $db->rows("SELECT * FROM thread ORDER BY last_post DESC, id DESC LIMIT $items OFFSET $page");
         foreach ($rows as $row) {
             $threads[] = new Thread($row);
         }
         
+        array_unshift($threads, $pages);
+                
         return $threads;
     }
     
-    public function getComments()
+    public function getComments($items, $page)
     {
         $comments = array();
+        $page = ($page-1)*$items;
         
         $db = DB::conn();
+        $count = $db->value("SELECT COUNT(*) FROM thread");
+        $pages = (int) ceil($count/$items);
+        
         $rows = $db->rows(
-            'SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC',
+            "SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT $items OFFSET $page",
             array($this->id)
         );
         foreach ($rows as $row) {
             $comments[] = new Comment($row);
         }
+        
+        array_unshift($comments, $pages);
         
         return $comments;
     }
@@ -74,6 +86,10 @@ class Thread extends AppModel
         $db->query(
             'INSERT INTO comment SET thread_id = ?, username = ?, body = ?, created = NOW()',
             array($this->id, $comment->username, $comment->body)
+        );
+        $db->query(
+            'UPDATE thread SET comments = comments + 1, last_post = NOW() WHERE id = ?',
+            array($this->id)
         );
     }
 }
