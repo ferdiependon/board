@@ -9,7 +9,9 @@
 
 <h1>All Threads</h1>
 
-<a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Start New Thread</a>
+<a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">
+    Start New Thread
+</a>
 
 <div class="thread-list">
     <div class="header">
@@ -19,12 +21,17 @@
         <span><b>Last Post</b></span>
     </div>
     <ul>
-        <?php foreach ($threads as $v): ?>
+        <?php foreach ($threads as $v) : ?>
             <li>
                 <span>
-                <a href="<?php eh(url('thread/view', array('thread_id' => $v->id))) ?>">
-                    <?php eh($v->title) ?>
-                </a></span>
+                    <a href="
+                        <?php eh(url(
+                            'thread/view',
+                            array('thread_id' => $v->id)
+                        )) ?>">
+                        <?php eh($v->title) ?>
+                    </a>
+                </span>
                 <span>
                     <?php eh($v->author) ?>
                 </span>
@@ -32,13 +39,16 @@
                     <?php eh($v->comments) ?>
                 </span>
                 <span>
-                    <?php eh(date("F j, Y, g:i:s A", strtotime($v->last_post))) ?>
+                    <?php eh(date(
+                        "F j, Y, g:i:s A",
+                        strtotime($v->last_post)
+                    ))?>
                 </span>
             </li>
         <?php endforeach ?>
     </ul>
     <div class="pager">
-        <?php for ($i=1; $i <= $pages; $i++): ?>
+        <?php for ($i=1; $i <= $pages; $i++) : ?>
             <a href="<?php eh(url('', array('page'=>$i))) ?>"><?php eh($i) ?></a>
         <?php endfor ?>
         <form method="get" name="pager">

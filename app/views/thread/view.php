@@ -1,4 +1,4 @@
-<?php $title = " - " . $thread->title ?>
+<?php $title = " - $thread->title" ?>
 
 <script type="text/javascript">
     function filter()
@@ -7,19 +7,25 @@
     }
 </script>
 
-<p><a href="<?php eh(url('thread/index')) ?>">All Threads</a> &raquo; <?php eh($thread->title) ?></p>
+<p>
+    <a href="<?php eh(url('thread/index')) ?>">All Threads</a>
+    &raquo;
+    <?php eh($thread->title) ?>
+</p>
+
 <h1><?php eh($thread->title) ?></h1>
 
-<?php foreach ($comments as $k => $v): ?>
+<?php foreach ($comments as $k => $v) : ?>
     <div class="comment">
         <div class="meta">
             #
-            <?php eh(($k+1) + ($page-1)*$items) ?>: Posted by <b><?php eh($v->username) ?></b> on 
+            <?php eh(($k+1) + ($page-1)*$items) ?>:
+            Posted by <b><?php eh($v->username) ?></b> on
             <?php eh(
                 date("F j, Y", strtotime($v->created))
                 . " at " .
-                date("g:i:s A", strtotime($v->created)))
-            ?>
+                date("g:i:s A", strtotime($v->created))
+            ) ?>
         </div>
         <div class="text">
             <?php echo readable_text($v->body) ?>
@@ -28,7 +34,7 @@
 <?php endforeach ?>
 
 <div class="pager">
-    <?php for ($i=1; $i <= $pages; $i++): ?>
+    <?php for ($i=1; $i <= $pages; $i++) : ?>
         <a href="<?php eh(url('', array('page'=>$i))) ?>"><?php eh($i) ?></a>
     <?php endfor ?>
     <form method="get" name="pager">
@@ -48,9 +54,9 @@
 
 <form class="well" method="post" action="<?php eh(url('thread/write')) ?>">
     <label>Name</label>
-    <?php if(isset($_SESSION['username'])): ?>
+    <?php if (isset($_SESSION['username'])) : ?>
         <input type="text" class="span2" name="username" value="<?php eh($_SESSION['username']) ?>" readonly>
-    <?php else: ?>
+    <?php else : ?>
         <input type="text" class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
     <?php endif ?>
     <label>Comment</label>

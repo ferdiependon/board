@@ -1,14 +1,15 @@
 <?php
 class UserController extends AppController
 {
+    public $page;
+
     public function login()
     {
         $user = new User;
-        
         $user->username = Param::get('username');
         $user->password = Param::get('password');
         $user->password2 = $user->password;
-        
+
         try {
             $user->login();
         } catch (ValidationException $e) {
@@ -41,7 +42,7 @@ class UserController extends AppController
                     $page = 'register';
                 }
                 break;
-            default : 
+            default :
                 throw new NotFoundException("{$page} is not found");
                 break;
         }

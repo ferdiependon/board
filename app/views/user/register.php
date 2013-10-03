@@ -2,25 +2,27 @@
 
 <h1>Register Account</h1>
 
-<?php if ($user->hasError()): ?>
+<?php if ($user->hasError()) : ?>
     <div class="alert alert-block">
         <h4 class="alert-heading">Registration Error:</h4>
-        <?php if (!empty($user->validation_errors['username2']['exists'])): ?>
+        <?php if (!empty($user->validation_errors['username2']['exists'])) : ?>
             <div><em>Username</em> already exists!</div>
         <?php endif ?>
-        <?php if (!empty($user->validation_errors['username']['length'])): ?>
+        <?php if (!empty($user->validation_errors['username']['length'])) : ?>
             <div><em>Username</em> must be between
                 <?php eh($user->validation['username']['length'][1]) ?> and
-                <?php eh($user->validation['username']['length'][2]) ?> characters in length.
+                <?php eh($user->validation['username']['length'][2]) ?>
+                characters in length.
             </div>
         <?php endif ?>
-        <?php if (!empty($user->validation_errors['password']['length'])): ?>
+        <?php if (!empty($user->validation_errors['password']['length'])) : ?>
             <div><em>Password</em> must be between
                 <?php eh($user->validation['password']['length'][1]) ?> and
-                <?php eh($user->validation['password']['length'][2]) ?> characters in length.
+                <?php eh($user->validation['password']['length'][2]) ?>
+                characters in length.
             </div>
         <?php endif ?>
-        <?php if (!empty($user->validation_errors['password2']['match'])): ?>
+        <?php if (!empty($user->validation_errors['password2']['match'])) : ?>
             <div><em>Passwords</em> do not match.</div>
         <?php endif ?>
     </div>

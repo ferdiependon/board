@@ -1,18 +1,20 @@
 <h1><?php eh($thread->title) ?></h1>
 
-<?php if ($comment->hasError()): ?>
+<?php if ($comment->hasError()) : ?>
     <div class="alert alert-block">
         <h4 class="alert-heading">Validation Errors:</h4>
-        <?php if (!empty($comment->validation_errors['username']['length'])): ?>
+        <?php if (!empty($comment->validation_errors['username']['length'])) : ?>
             <div><em>Name</em> must be between
                 <?php eh($comment->validation['username']['length'][1]) ?> and
-                <?php eh($comment->validation['username']['length'][2]) ?> characters in length.
+                <?php eh($comment->validation['username']['length'][2]) ?>
+                characters in length.
             </div>
         <?php endif ?>
-        <?php if (!empty($comment->validation_errors['body']['length'])): ?>
+        <?php if (!empty($comment->validation_errors['body']['length'])) : ?>
             <div><em>Comment</em> must be between
                 <?php eh($comment->validation['body']['length'][1]) ?> and
-                <?php eh($comment->validation['body']['length'][2]) ?> characters in length.
+                <?php eh($comment->validation['body']['length'][2]) ?>
+                characters in length.
             </div>
         <?php endif ?>
     </div>
@@ -20,10 +22,10 @@
 
 <form class="well" method="post" action="<?php eh(url('thread/write')) ?>">
     <label>Name</label>
-    <?php if(isset($_SESSION['username'])): ?>
+    <?php if (isset($_SESSION['username'])) : ?>
         <input type="text" class="span2" name="username" value="<?php eh($_SESSION['username']) ?>" readonly>
-    <?php else: ?>
-        <input type="text class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
+    <?php else : ?>
+        <input type="text" class="span2" name="username" value="<?php eh(Param::get('username')) ?>">
     <?php endif ?>
     <label>Comment</label>
     <textarea name="body"><?php eh(Param::get('body')) ?></textarea>

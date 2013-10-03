@@ -1,15 +1,19 @@
 <?php
 class User extends AppModel
 {
-    public $username2, $password2;
+    public $md5;
+    public $password2;          // used for checking if passwords match
+    public $row;
+    public $username2;          // used for checking existence of username
+
     public $validation = array(
         'username' => array(
             'length' => array(
                 'validate_between', 1, 32,
             ),
         ),
-        'username2' => array(
-            'exists' => array(
+        'username2' => array(   // separated because using username performs
+            'exists' => array(  // this check when logging in
                 'username_exists'
             ),
         ),
@@ -18,8 +22,8 @@ class User extends AppModel
                 'validate_between', 1, 32,
             ),
         ),
-        'password2' => array(
-            'match' => array(
+        'password2' => array(   // separated because logging in performs this
+            'match' => array(   // matching check on the password field
                 'password_match',
             ),
         ),
@@ -27,8 +31,9 @@ class User extends AppModel
         
     public function login()
     {
+        // manually add password as argument to match check
         $this->validation['password2']['match'][] = $this->password;
-        
+
         if (!$this->validate()) {
             throw new ValidationException('Invalid login credentials!');
         }
@@ -36,7 +41,7 @@ class User extends AppModel
         $db = DB::conn();
         $md5 = md5($this->password);
         $row = $db->row(
-            "SELECT 1 FROM user WHERE username = ? AND password = ?",
+            'SELECT 1 FROM user WHERE username = ? AND password = ?',
             array($this->username, $md5)
         );
         
@@ -53,19 +58,24 @@ class User extends AppModel
     
     public function register()
     {
+        // temporarily copy username to check if existing
         $this->username2 = $this->username;
+        // manually add password as argument to match check
         $this->validation['password2']['match'][] = $this->password;
         $this->validate();
         if ($this->hasError()) {
             throw new ValidationException('Invalid username or password!');
         }
         
-        $md5 = md5($this->password);
-        
         $db = DB::conn();
-        $db->begin();            
-        $db->query('INSERT INTO user SET username = ?, password = ?', array($this->username, $md5));
-        $this->id = $db->lastInsertId();            
+        $md5 = md5($this->password);
+        $db->begin();
+
+        $db->query(
+            'INSERT INTO user SET username = ?, password = ?',
+            array($this->username, $md5)
+        );
+
         $db->commit();
     }
 }
