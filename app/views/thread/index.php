@@ -51,7 +51,7 @@
         <?php for ($i=1; $i <= $pages; $i++) : ?>
             <a href="<?php eh(url('', array('page'=>$i))) ?>"><?php eh($i) ?></a>
         <?php endfor ?>
-        <form method="get" name="pager">
+        <form method="get" name="pager" action="<?php url() ?>">
             Items:
             <select id="items" name="items" onchange="filter()">
                 <option <?php if ($items == 5) echo 'selected' ?>>5</option>

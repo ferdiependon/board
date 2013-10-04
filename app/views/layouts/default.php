@@ -22,7 +22,7 @@
 
                 <div class="login">
                     <?php if (isset($_SESSION['username'])) : ?>
-                        <span>Welcome back, <b><?php echo $_SESSION['username'] ?></b>!</span>
+                        <span>Welcome back, <b><?php eh($_SESSION['username']) ?></b>!</span>
                         <a href="<?php eh(url('user/logout')) ?>" class="btn btn-primary">Log Out</a>
                     <?php else : ?>
                         <form method="post" action="<?php eh(url('user/login')) ?>">

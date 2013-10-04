@@ -37,7 +37,7 @@
     <?php for ($i=1; $i <= $pages; $i++) : ?>
         <a href="<?php eh(url('', array('page'=>$i))) ?>"><?php eh($i) ?></a>
     <?php endfor ?>
-    <form method="get" name="pager">
+    <form method="get" name="pager" action="<?php url() ?>">
         Items:
         <input type="hidden" name="thread_id" value="<?php eh($_GET['thread_id']) ?>">
         <select id="items" name="items" onchange="filter()">
