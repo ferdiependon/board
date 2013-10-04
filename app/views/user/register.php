@@ -2,10 +2,11 @@
 
 <h1>Register Account</h1>
 
-<?php if ($user->hasError()) : ?>
+<?php if ($user->hasError() || $user->username_reg) : ?>
     <div class="alert alert-block">
         <h4 class="alert-heading">Registration Error:</h4>
-        <?php if (!empty($user->validation_errors['username2']['exists'])) : ?>
+    <?php $user->username_reg ?>
+        <?php if ($user->username_reg) : ?>
             <div><em>Username</em> already exists!</div>
         <?php endif ?>
         <?php if (!empty($user->validation_errors['username']['length'])) : ?>
@@ -22,7 +23,7 @@
                 characters in length.
             </div>
         <?php endif ?>
-        <?php if (!empty($user->validation_errors['password2']['match'])) : ?>
+        <?php if (!empty($user->validation_errors['password_reg']['match'])) : ?>
             <div><em>Passwords</em> do not match.</div>
         <?php endif ?>
     </div>
@@ -34,7 +35,7 @@
     <label>Password</label>
     <input type="password" class="span2" name="password" value="<?php eh(Param::get('password')) ?>">
     <label>Repeat Password</label>
-    <input type="password" class="span2" name="password2" value="<?php eh(Param::get('password2')) ?>">
+    <input type="password" class="span2" name="password_reg" value="<?php eh(Param::get('password_reg')) ?>">
     <br/>
     <input type="hidden" name="page_next" value="register_end">
     <button type="submit" class="btn btn-primary">Submit</button>

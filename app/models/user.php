@@ -2,9 +2,9 @@
 class User extends AppModel
 {
     public $md5;
-    public $password2;          // used for checking if passwords match
+    public $password_reg;               // used for checking if passwords match
     public $row;
-    public $username2;          // used for checking existence of username
+    public $username_reg;               // used for checking existence of username
 
     public $validation = array(
         'username' => array(
@@ -12,32 +12,27 @@ class User extends AppModel
                 'validate_between', 1, 32,
             ),
         ),
-        'username2' => array(   // separated because using username performs
-            'exists' => array(  // this check when logging in
-                'username_exists'
-            ),
-        ),
         'password' => array(
             'length' => array(
                 'validate_between', 1, 32,
             ),
         ),
-        'password2' => array(   // separated because logging in performs this
-            'match' => array(   // matching check on the password field
+        'password_reg' => array(        // separated because logging in performs this
+            'match' => array(           // matching check on the password field
                 'password_match',
             ),
         ),
     );
-        
+
     public function login()
     {
         // manually add password as argument to match check
-        $this->validation['password2']['match'][] = $this->password;
+        $this->validation['password_reg']['match'][] = $this->password;
 
         if (!$this->validate()) {
-            throw new ValidationException('Invalid login credentials!');
+            //throw new ValidationException('Invalid login credentials!');
         }
-                
+
         $db = DB::conn();
         $md5 = md5($this->password);
         $row = $db->row(
@@ -52,30 +47,37 @@ class User extends AppModel
     
     public function logout()
     {
-        $_SESSION = array();
-        session_destroy();
+        $_SESSION = array();    // removing this renders the log out page but still shows
+        session_destroy();      // the user as logged in until the page refreshes once
     }
     
     public function register()
     {
-        // temporarily copy username to check if existing
-        $this->username2 = $this->username;
         // manually add password as argument to match check
-        $this->validation['password2']['match'][] = $this->password;
-        $this->validate();
-        if ($this->hasError()) {
-            throw new ValidationException('Invalid username or password!');
+        $this->validation['password_reg']['match'][] = $this->password;
+        $this->username_exists();
+        if (!$this->validate() || $this->username_reg) {
+            throw new ValidationException('Invalid registration info!');
         }
         
         $db = DB::conn();
         $md5 = md5($this->password);
-        $db->begin();
 
         $db->query(
             'INSERT INTO user SET username = ?, password = ?',
             array($this->username, $md5)
         );
+    }
 
-        $db->commit();
+    function username_exists()
+    {
+        $db = DB::conn();
+
+        $row = $db->value(
+            'SELECT 1 FROM user WHERE username = ?',
+            array($this->username)
+        );
+
+        return $this->username_reg = (bool)$row;
     }
 }

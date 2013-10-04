@@ -37,9 +37,9 @@ class ThreadController extends AppController
     public function index()
     {
         $items = (isset($_SESSION['t_items'])) ? $_SESSION['t_items'] : 10;
-        $items = (Param::get('items')) ? Param::get('items') : $items;
+        $items = Param::get('items', $items);
         $_SESSION['t_items'] = $items;
-        $page = (Param::get('page')) ? Param::get('page') : 1;
+        $page = Param::get('page', 1);
 
         $threads = Thread::getAll($items, $page);
         $pages = array_shift($threads);
@@ -50,9 +50,9 @@ class ThreadController extends AppController
     public function view()
     {
         $items = (isset($_SESSION['c_items'])) ? $_SESSION['c_items'] : 5;
-        $items = (Param::get('items')) ? Param::get('items') : $items;
+        $items = Param::get('items', $items);
         $_SESSION['c_items'] = $items;
-        $page = (Param::get('page')) ? Param::get('page') : 1;
+        $page = Param::get('page', 1);
 
         $thread = Thread::get(Param::get('thread_id'));
         $comments = $thread->getComments($items, $page);

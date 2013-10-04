@@ -31,7 +31,7 @@
         <?php endif ?>
         <?php if (!$user->validation_errors['username']['length'] &&
                   !$user->validation_errors['password']['length']) : ?>
-            <div>Wrong username or password.</div>
+            <div>Wrong <em>username</em> or <em>password</em>.</div>
         <?php endif ?>
     </div>
 <?php endif ?>

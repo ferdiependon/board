@@ -8,13 +8,10 @@ class UserController extends AppController
         $user = new User;
         $user->username = Param::get('username');
         $user->password = Param::get('password');
-        $user->password2 = $user->password;
+        $user->password_reg = $user->password;
 
-        try {
-            $user->login();
-        } catch (ValidationException $e) {
-        }
-        
+        $user->login();
+
         $this->set(get_defined_vars());
     }
     
@@ -35,7 +32,7 @@ class UserController extends AppController
             case 'register_end' :
                 $user->username = Param::get('username');
                 $user->password = Param::get('password');
-                $user->password2 = Param::get('password2');
+                $user->password_reg = Param::get('password_reg');
                 try {
                     $user->register();
                 } catch (ValidationException $e) {

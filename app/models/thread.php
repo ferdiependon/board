@@ -24,7 +24,6 @@ class Thread extends AppModel
         }
         
         $db = DB::conn();
-        $db->begin();
         
         $db->query('
             INSERT INTO thread SET title = ?, author = ?, last_post = NOW()',
@@ -33,7 +32,6 @@ class Thread extends AppModel
 
         $this->id = $db->lastInsertId();
         $this->write($comment);
-        $db->commit();
     }
     
     public static function get($id)
@@ -50,7 +48,7 @@ class Thread extends AppModel
         $page = ($page-1)*$items;
         
         $db = DB::conn();
-        $count = $db->value("SELECT COUNT(*) FROM thread");
+        $count = $db->value("SELECT COUNT(1) FROM thread");
         $pages = (int) ceil($count/$items);
 
         // integer placeholders are not compatible when using LIMIT because it
@@ -77,7 +75,7 @@ class Thread extends AppModel
         
         $db = DB::conn();
         $count = $db->value('
-            SELECT COUNT(*) FROM comment WHERE thread_id = ?',
+            SELECT COUNT(1) FROM comment WHERE thread_id = ?',
             array($this->id)
         );
         $pages = (int) ceil($count/$items);
@@ -109,20 +107,26 @@ class Thread extends AppModel
     
         $db = DB::conn();
 
-        $db->query(
-            'INSERT INTO comment SET
-                thread_id = ?,
-                username = ?,
-                body = ?,
-                created = NOW()',
-            array($this->id, $comment->username, $comment->body)
-        );
-        $db->query(
-            'UPDATE thread SET
-                comments = comments + 1,
-                last_post = NOW()
-                WHERE id = ?',
-            array($this->id)
-        );
+        $db->begin();
+        try {
+            $db->query(
+                'INSERT INTO comment SET
+                    thread_id = ?,
+                    username = ?,
+                    body = ?',
+                array($this->id, $comment->username, $comment->body)
+            );
+            $db->query(
+                'UPDATE thread SET
+                    comments = comments + 1,
+                    last_post = NOW()
+                    WHERE id = ?',
+                array($this->id)
+            );
+            $db->commit();
+        } catch (Exception $e) {
+            $db->rollback();
+            throw $e;
+        }
     }
 }
