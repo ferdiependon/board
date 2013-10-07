@@ -1,0 +1,109 @@
+/*!
+ * Bootstrap Responsive v2.1.1
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+
+html {
+    overflow: scroll;
+}
+
+div.thread-list {
+    border: double 5px #08c;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+div.thread-list span {
+    display: inline-block;
+    width: 27%;
+}
+
+div.thread-list span.comments {
+    width: 10%;
+}
+
+div.pager {
+    margin: 0px;
+}
+
+div.pager form {
+    float: right;
+    margin: 0px;
+}
+
+div.pager select {
+    width: 60px;
+}
+
+div.thread-list div.header {
+    background-color: #08c;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+}
+
+div.thread-list ul {
+    list-style-type: none;
+    margin-left: 0px;
+    padding: 0px;
+}
+
+div.thread-list ul li {
+    border-bottom: solid 1px #08c;
+    padding: 5px;
+}
+
+div.comment {
+    border: dashed 2px #08c;
+    border-radius: 10px;
+    color: white;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+div.comment .meta {
+    background-color: #08c;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+div.comment .text {
+    color: black;
+    padding: 5px;
+}
+ 
+form.well input.span2, form.well textarea  {
+    width: 400px;
+}
+
+form.well textarea {
+    height: 200px;
+    max-width: 880px;
+}
+ 
+div.login {
+    display: block;
+    float: right;
+    height: 41px;
+}
+
+div.login input {
+    margin-top: 5px;
+}
+
+div.login .btn {
+    margin-top: -5px;
+}
+
+div.login span{
+    display: inline-block;
+    margin-top: 11px;
+    position: relative;
+    top: 0px;
+}

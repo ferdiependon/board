@@ -1,7 +1,12 @@
-<h2><?php eh($thread->title) ?></h2>
+<?php $title = $thread->title ?>
+<?php header("refresh: 3; url=/thread/view?thread_id=$thread->id") ?>
 
-<p class="alert alert-success">Thread successfully created.</p>
+<h1><?php eh($thread->title) ?></h1>
 
+<p class="alert alert-success">
+    Thread successfully created.
+    Please wait while you are being redirected.
+</p>
 <a href="<?php eh(url('thread/view', array('thread_id' => $thread->id))) ?>">
-    &larr; Got to thread
+    &larr; Go to Thread
 </a>

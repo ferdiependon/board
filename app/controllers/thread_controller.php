@@ -1,6 +1,11 @@
 <?php
 class ThreadController extends AppController
 {
+    public $comments;
+    public $items;
+    public $page;
+    public $pages;
+
     public function create()
     {
         $thread = new Thread;
@@ -20,7 +25,7 @@ class ThreadController extends AppController
                     $page = 'create';
                 }
                 break;
-            default : 
+            default :
                 throw new NotFoundException("{$page} is not found");
                 break;
         }
@@ -31,15 +36,27 @@ class ThreadController extends AppController
     
     public function index()
     {
-        $threads = Thread::getAll();
-        
+        $items = (isset($_SESSION['t_items'])) ? $_SESSION['t_items'] : 10;
+        $items = Param::get('items', $items);
+        $_SESSION['t_items'] = $items;
+        $page = Param::get('page', 1);
+
+        $threads = Thread::getAll($items, $page);
+        $pages = array_shift($threads);
+
         $this->set(get_defined_vars());
     }
     
     public function view()
     {
+        $items = (isset($_SESSION['c_items'])) ? $_SESSION['c_items'] : 5;
+        $items = Param::get('items', $items);
+        $_SESSION['c_items'] = $items;
+        $page = Param::get('page', 1);
+
         $thread = Thread::get(Param::get('thread_id'));
-        $comments = $thread->getComments();
+        $comments = $thread->getComments($items, $page);
+        $pages = array_shift($comments);
         
         $this->set(get_defined_vars());
     }
